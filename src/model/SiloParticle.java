@@ -1,5 +1,7 @@
 package model;
 
+import utils.ForcesUtils;
+
 public class SiloParticle extends VerletParticle {
 
 	public SiloParticle(int id, double x, double y, double vx, double vy, double m, double r) {
@@ -13,6 +15,10 @@ public class SiloParticle extends VerletParticle {
 	
 	@Override
 	public Point getForce(Particle p) {
-		return new Point(0,0);
+		Point dir = Point.sub(p.position, this.position);
+		double e = p.getRadius()+getRadius()-dir.abs();
+		dir.normalize();
+		Point a= ForcesUtils.getForce(Point.sub(this.velocity, p.velocity), dir, new Point(-dir.y, dir.x), e);
+		return a;
 	}
 }

@@ -13,15 +13,19 @@ import utils.RandomUtils;
 public class SiloRunner {
 
 	private double time;
-	static public double W = 1.0, L = 3.0, D = 0.2;
+	static public double W = 1.0, L = 4.0, D = 0.5;
 	static final public double Kn = 1e5, Kt = 2e5;  
-	private int N = 500;
+	private int N = 200;
 	private int tries = 100;
 	private int idCounter = 1;
 	private final double mass = 0.01;
-
+	private final double maxTime = 4.0;
+	private final double dt = 1e-5;
+	private final double dt2 = 1.0/60;
+	
+	
 	public SiloRunner() {
-		RandomUtils.setSeed(123);
+		RandomUtils.setSeed(34456);
 		this.run();
 	}
 
@@ -74,10 +78,6 @@ public class SiloRunner {
 		}	
 		return null;
 	}
-	
-	private final double maxTime = 2.0;
-	private final double dt = 3e-5;
-	private final double dt2 = 1.0/60;
 	
 	private void run() {
 		OutputXYZFilesGenerator outputXYZFilesGenerator = new OutputXYZFilesGenerator("animation/", "state");

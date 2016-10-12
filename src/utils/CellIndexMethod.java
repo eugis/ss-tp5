@@ -50,6 +50,7 @@ public class CellIndexMethod <T extends Particle> {
 
 	public Map<T, Set<T>> getNeighbours() {
 		Map<T, Set<T>> neighbours = new HashMap<T, Set<T>>();
+		fillMatrix(particles, m);
 		for (T p : particles) {
 			neighbours.put(p, new HashSet<T>());
 		}
@@ -127,7 +128,11 @@ public class CellIndexMethod <T extends Particle> {
 		}
 		for (T particle : particles) {
 			Point p = particle.getPosition();
+			try{
 			matrix[(int) (p.x / cellLength)][(int) (p.y / cellLength)].add(particle);
+			}catch(Exception e){
+				System.err.println(p.x+" "+p.y);
+			}
 		}
 	}
 
@@ -154,7 +159,7 @@ public class CellIndexMethod <T extends Particle> {
 	 * @param y - new y coordinate
 	 */
 	public void moveTo(T particle, Point point){
-		Point p = particle.getPosition();
+		/*Point p = particle.getPosition();
 		int prevX = (int) (p.x / cellLength);
 		int prevY = (int) (p.y / cellLength);
 		int postX = (int) (point.x / cellLength);
@@ -162,6 +167,6 @@ public class CellIndexMethod <T extends Particle> {
 		if(prevX != postX || prevY != postY){
 			matrix[prevX][prevY].remove(particle);
 			matrix[postX][postY].add(particle);
-		}
+		}*/
 	}
 }

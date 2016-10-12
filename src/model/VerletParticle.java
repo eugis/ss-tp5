@@ -1,6 +1,7 @@
 package model;
 
 import run.SiloRunner;
+import utils.RandomUtils;
 
 public abstract class VerletParticle extends Particle {
 
@@ -31,7 +32,8 @@ public abstract class VerletParticle extends Particle {
 	}
 
 	public void reset() {
-		position = new Point(position.x, SiloRunner.L);
+		position = new Point(RandomUtils.getRandomDouble(0, SiloRunner.W), SiloRunner.L-RandomUtils.getRandomDouble(0, 1));
+		velocity = new Point(0,0);
 		oldPosition = position.clone();
 	}
 
