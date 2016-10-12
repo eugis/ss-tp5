@@ -5,28 +5,16 @@ import java.util.function.Function;
 public class Point {
 	
 	static final double EPSILON = 1e-7;
-	public double x, y, z;
-	
-	public Point(double x, double y, double z){
-		this.x=x;
-		this.y=y;
-		this.z=z;
-	}
+	public double x, y;
 	
 	public Point(double x, double y){
 		this.x=x;
 		this.y=y;
-		z=0;
 	}
+	
 	
 	public void add(Point p){
-		add(p.x, p.y, p.z);
-	}
-	
-	public void add(double x, double y, double z) {
-		this.x+=x;
-		this.y+=y;
-		this.z+=z;
+		add(p.x, p.y);
 	}
 
 	public void add(double x, double y) {
@@ -37,7 +25,6 @@ public class Point {
 	public void applyFunction(Function<Double, Double> f){
 		x = f.apply(x);
 		y = f.apply(y);
-		z = f.apply(z);
 	}
 	
 	public double abs(){
@@ -45,19 +32,19 @@ public class Point {
 	}
 	
 	public String toString(){
-		return "("+x+", "+y+", "+z+")";
+		return "("+x+", "+y+")";
 	}
 	
 	public Point clone() {
-		return new Point(x, y, z);
+		return new Point(x, y);
 	}
 	
 	static public Point sum(Point p1, Point p2){
-		return new Point(p1.x+p2.x, p1.y+p2.y, p1.z+p2.z);
+		return new Point(p1.x+p2.x, p1.y+p2.y);
 	}
 	
 	static public Point sub(Point p1, Point p2){
-		return new Point(p1.x-p2.x, p1.y-p2.y, p1.z-p2.z);
+		return new Point(p1.x-p2.x, p1.y-p2.y);
 	}
 	
 	static public double abs(Point p){
@@ -65,7 +52,7 @@ public class Point {
 	}
 	
 	static public double abs2(Point p){
-		return p.x*p.x+p.y*p.y+p.z*p.z;
+		return p.x*p.x+p.y*p.y;
 	}
 
 	static public double dist(Point p1, Point p2){

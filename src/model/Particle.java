@@ -10,13 +10,6 @@ public class Particle {
 	private double radius;
 	private double mass;
 	
-	public Particle(int id, double x, double y, double z, double vx, double vy, double vz, double m, double r) {
-		this.id = id;
-		this.position = new Point(x, y, z);
-		this.velocity = new Point(vx, vy, vz);
-		this.mass = m;
-		this.radius = r;
-	}
 
 	public Particle(int id, double x, double y, double vx, double vy, double m, double r) {
 		this.id = id;
@@ -75,17 +68,11 @@ public class Particle {
 		this.position = new Point(x, y);
 	}
 	
-	public void updatePosition(double x, double y, double z) {
-		this.position = new Point(x, y, z);
-	}
 	
 	public void updateVelocity(double x, double y) {
 		this.velocity = new Point(x, y);
 	}
 	
-	public void updateVelocity(double x, double y, double z) {
-		this.velocity = new Point(x, y, z);
-	}
 	
 	public void move(double time){
 		Point deltaPosition = velocity.clone();
@@ -93,8 +80,8 @@ public class Particle {
 		position.add(deltaPosition);
 	}
 	
-	public static boolean areOverlapped(Particle p, Particle q){
-		return Math.pow(p.position.x-q.position.x, 2) + Math.pow(p.position.y-q.position.y, 2) <= Math.pow(p.radius+q.radius,2);
+	public static <T extends Particle> boolean areOverlapped(T p, T q){
+		return Math.pow(p.position.x-q.position.x, 2) + Math.pow(p.position.y-q.position.y, 2) <= Math.pow(p.getRadius()+q.getRadius(),2);
 	}
 
 	public double getSpeed() {
@@ -109,4 +96,28 @@ public class Particle {
 		this.radius+=radius;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Particle other = (Particle) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	
+	
 }
