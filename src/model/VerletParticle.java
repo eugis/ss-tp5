@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Collection;
+
 import run.SiloRunner;
 import utils.RandomUtils;
 
@@ -31,8 +33,20 @@ public abstract class VerletParticle extends Particle {
 		oldPosition = new Point(x, y);
 	}
 
-	public void reset() {
-		position = new Point(RandomUtils.getRandomDouble(0, SiloRunner.W), SiloRunner.L-RandomUtils.getRandomDouble(0, 1));
+	public void reset(Collection<VerletParticle> topParticles) {
+		boolean areOverlapped;
+		do{
+			position = new Point(RandomUtils.getRandomDouble(getRadius(), SiloRunner.W-getRadius()), SiloRunner.L-RandomUtils.getRandomDouble(getRadius(), 1-getRadius()));
+			areOverlapped = false;
+			for(VerletParticle vp : topParticles){
+				if(!vp.equals(this) && Particle.areOverlapped(vp, this)){
+					areOverlapped = true;
+					break;
+				}
+			}
+		}while(areOverlapped);
+		System.out.println("Particle reset");
+		System.out.println(position+" "+getId());
 		velocity = new Point(0,0);
 		oldPosition = position.clone();
 	}

@@ -120,18 +120,18 @@ public class CellIndexMethod <T extends Particle> {
 
 	@SuppressWarnings("unchecked")
 	private void fillMatrix(List<T> particles, int m) {
-		matrix = new Set[m][m];
+		matrix = new Set[m][m+20];
 		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < m; j++) {
+			for (int j = 0; j < m+20; j++) {
 				matrix[i][j] = new HashSet<T>();
 			}
 		}
 		for (T particle : particles) {
 			Point p = particle.getPosition();
 			try{
-			matrix[(int) (p.x / cellLength)][(int) (p.y / cellLength)].add(particle);
+				matrix[(int) (p.x / cellLength)][(int) (p.y / cellLength) + 20].add(particle);
 			}catch(Exception e){
-				System.err.println(p.x+" "+p.y);
+				System.err.println(p.x+" "+p.y+"  id: "+particle.getId());
 			}
 		}
 	}
