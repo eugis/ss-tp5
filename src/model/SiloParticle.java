@@ -19,6 +19,9 @@ public class SiloParticle extends VerletParticle {
 		double e = p.getRadius()+getRadius()-dir.abs();
 		dir.normalize();
 		Point a= ForcesUtils.getForce(Point.sub(this.velocity, p.velocity), dir, new Point(-dir.y, dir.x), e);
+		if(a.abs()>10000){
+			System.out.println(getId()+" collide vs "+p.getId());
+		}
 		return a;
 	}
 }

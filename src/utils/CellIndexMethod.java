@@ -129,9 +129,9 @@ public class CellIndexMethod <T extends Particle> {
 		for (T particle : particles) {
 			Point p = particle.getPosition();
 			try{
-			matrix[(int) (p.x / cellLength)][(int) (p.y / cellLength)].add(particle);
+				matrix[(int) (p.x / cellLength)][(int) (p.y / cellLength)].add(particle);
 			}catch(Exception e){
-				System.err.println(p.x+" "+p.y);
+				System.err.println(p.x+" "+p.y+"  id: "+particle.getId());
 			}
 		}
 	}

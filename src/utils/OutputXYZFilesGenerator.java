@@ -11,7 +11,7 @@ import run.SiloRunner;
 import model.Particle;
 
 public class OutputXYZFilesGenerator {
-	
+
 	private int frameNumber;
 	private String path;
 
@@ -27,25 +27,31 @@ public class OutputXYZFilesGenerator {
 
 	public void printState(List<? extends Particle> particles) {
 		List<String> lines = new LinkedList<String>();
-		lines.add(String.valueOf(particles.size()+4));
+		lines.add(String.valueOf(particles.size()));
 		lines.add("ParticleId xCoordinate yCoordinate xDisplacement yDisplacement Radius R G B Transparency Selection");
 		for (Particle p : particles) {
 			lines.add(getInfo(p, "1 0 0", 0, 0));
 		}
-		addBorderParticles(lines);
+		lines.set(0, String.valueOf(Integer.valueOf(lines.get(0)) + addBorderParticles(lines)));
 		writeFile(lines);
 	}
 
-
-	private void addBorderParticles(List<String> lines) {
-		lines.add("10000 0 0 0 0 0 0 0 0 1 0");
-		lines.add("10001 "+SiloRunner.W+" 0 0 0 0 0 0 0 1 0");
-		lines.add("10002 "+SiloRunner.W+" "+SiloRunner.L+" 0 0 0 0 0 0 1 0");
-		lines.add("10003 0 "+SiloRunner.L+" 0 0 0 0 0 0 1 0");
-		
+	private int addBorderParticles(List<String> lines) {
+		int counter = 0;
+		for (double i = 0; i * 0.02 <= SiloRunner.L; i++) {
+			lines.add("10000 0 " + (i * 0.02 + SiloRunner.fall) + " 0 0 0.02 0 1 0 0 0");
+			lines.add("10000 " + SiloRunner.W + " " + (i * 0.02 + SiloRunner.fall) + " 0 0 0.02 0 1 0 0 0");
+			counter += 2;
+		}
+		for (int i = 0; i * 0.02 <= (SiloRunner.W - SiloRunner.D) / 2; i++) {
+			lines.add("10000 " + i * 0.02 + " " + SiloRunner.fall + " 0 0 0.02 0 1 0 0 0");
+			lines.add("10000 " + (SiloRunner.W - i * 0.02) + " " + SiloRunner.fall + " 0 0 0.02 0 1 0 0 0");
+			counter += 2;
+		}
+		return counter;
 	}
 
-	//TODO: add z
+	// TODO: add z
 	private String getInfo(Particle p, String color, double transparency, int selection) {
 		return p.getId() + " " + p.getX() + " " + p.getY() + " " + p.getXVelocity() + " " + p.getYVelocity() + " "
 				+ p.getRadius() + " " + color + " " + transparency + " " + selection;

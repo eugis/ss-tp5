@@ -81,7 +81,7 @@ public class Particle {
 	}
 	
 	public static <T extends Particle> boolean areOverlapped(T p, T q){
-		return Math.pow(p.position.x-q.position.x, 2) + Math.pow(p.position.y-q.position.y, 2) <= Math.pow(p.getRadius()+q.getRadius(),2);
+		return Point.dist2(p.position, q.position) <= Math.pow(p.getRadius()+q.getRadius(),2);
 	}
 
 	public double getSpeed() {
