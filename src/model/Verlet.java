@@ -80,7 +80,7 @@ public class Verlet {
 		double ry = 2 * p.position.y - p.getOldPosition().y + force.y * Math.pow(dt, 2) / p.getMass();
 
 		p.updatePosition(rx, ry);
-		if(ry<-1){ p.reset(particles); }
+		if(ry<0){ p.reset(particles); }
 	}
 
 	private void updateVelocity(VerletParticle p, Point oldPosition, double dt) {
