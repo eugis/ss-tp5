@@ -45,10 +45,12 @@ public abstract class VerletParticle extends Particle {
 				}
 			}
 		}while(areOverlapped);
-		System.out.println("Particle reset");
-		System.out.println(position+" "+getId());
 		velocity = new Point(0,0);
 		oldPosition = position.clone();
+	}
+	
+	public double getKineticEnergy() {
+		return 0.5 * getMass() * Math.pow(getSpeed(), 2);
 	}
 
 	

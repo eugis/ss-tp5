@@ -56,10 +56,10 @@ public class Verlet {
 
 	private Point wallForce(VerletParticle p) {
 		Point sum = new Point(0, 0);
-		if (p.position.x - p.getRadius() < 0) {
+		if (p.position.x - p.getRadius() < 0 && p.position.y > SiloRunner.fall) {
 			sum = Point.sum(sum, ForcesUtils.wallLeftForce(p));
 		}
-		if (p.position.x + p.getRadius() > SiloRunner.W) {
+		if (p.position.x + p.getRadius() > SiloRunner.W && p.position.y > SiloRunner.fall) {
 			sum = Point.sum(sum, ForcesUtils.wallRightForce(p));
 		}
 		if (Math.abs(p.position.y-SiloRunner.fall) < p.getRadius() && !inGap(p)) {
