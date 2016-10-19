@@ -7,6 +7,7 @@ import model.Particle;
 import model.SiloParticle;
 import model.Verlet;
 import model.VerletParticle;
+import utils.OutputFileGenerator;
 import utils.OutputXYZFilesGenerator;
 import utils.RandomUtils;
 
@@ -15,7 +16,7 @@ public class SiloRunner {
 	private double time;
 	static public double W = 1.0, L = 4.0, D = 0.5, fall=1.0;
 	static final public double Kn = 1e5, Kt = 2e5;  
-	private int N = 20;
+	private int N = 100;
 	private int tries = 100;
 	private int idCounter = 1;
 	private final double mass = 0.01;
@@ -48,7 +49,6 @@ public class SiloRunner {
 				}
 			}
 			if(!areOverlapped){
-				System.out.println(idCounter);
 				list.add(p);
 				idCounter++;
 			}
@@ -81,6 +81,7 @@ public class SiloRunner {
 	
 	private void run() {
 		OutputXYZFilesGenerator outputXYZFilesGenerator = new OutputXYZFilesGenerator("animation/", "state");
+		OutputFileGenerator kineticEnergy = new OutputFileGenerator("animation/", "kinetic");
 		List<VerletParticle> particles = createParticles(N);
 		Verlet v = new Verlet(particles, dt);
 		time = 0;
@@ -88,12 +89,22 @@ public class SiloRunner {
 		while (time < maxTime) {
 			if(lastTime+dt2<time){
 				outputXYZFilesGenerator.printState(particles);
+				kineticEnergy.addLine(String.valueOf(getSystemKineticEnery(particles)));
 				lastTime = time;
-				System.out.println(time);
 			}
 			v.run();
 			time+=dt;
 		}
+		kineticEnergy.writeFile();
 		
 	}
+	
+	private double getSystemKineticEnery(List<VerletParticle> particles) {
+		double K = 0;
+		for(VerletParticle vp : particles) {
+			K += vp.getKineticEnergy();
+		}
+		return K;
+	}
+	
 }
