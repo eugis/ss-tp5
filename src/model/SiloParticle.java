@@ -3,7 +3,7 @@ package model;
 import utils.ForcesUtils;
 
 public class SiloParticle extends VerletParticle {
-
+	
 	public SiloParticle(int id, double x, double y, double vx, double vy, double m, double r) {
 		super(id, x, y, vx, vy, m, r);
 	}
