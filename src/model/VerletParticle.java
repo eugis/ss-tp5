@@ -36,7 +36,7 @@ public abstract class VerletParticle extends Particle {
 	public void reset(Collection<VerletParticle> topParticles) {
 		boolean areOverlapped;
 		do{
-			position = new Point(RandomUtils.getRandomDouble(getRadius(), SiloRunner.W-getRadius()), SiloRunner.L-RandomUtils.getRandomDouble(getRadius(), 1-getRadius()));
+			position = new Point(RandomUtils.getRandomDouble(getRadius(), SiloRunner.W-getRadius()), SiloRunner.L+SiloRunner.fall-RandomUtils.getRandomDouble(getRadius(), 1-getRadius()));
 			areOverlapped = false;
 			for(VerletParticle vp : topParticles){
 				if(!vp.equals(this) && Particle.areOverlapped(vp, this)){

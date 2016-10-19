@@ -38,18 +38,14 @@ public class OutputXYZFilesGenerator {
 
 	private int addBorderParticles(List<String> lines) {
 		int counter = 0;
-//		lines.add("10000 0 0 0 0 0 0 0 0 1 0");
-//		lines.add("10001 " + SiloRunner.W + " 0 0 0 0 0 0 0 1 0");
-//		lines.add("10002 " + SiloRunner.W + " " + SiloRunner.L + " 0 0 0 0 0 0 1 0");
-//		lines.add("10003 0 " + SiloRunner.L + " 0 0 0 0 0 0 1 0");
-		for (int i = 0; i * 0.02 <= SiloRunner.L; i++) {
-			lines.add("10000 0 " + i * 0.02 + " 0 0 0.02 0 1 0 0 0");
-			lines.add("10000 " + SiloRunner.W + " " + i * 0.02 + " 0 0 0.02 0 1 0 0 0");
+		for (double i = 0; i * 0.02 <= SiloRunner.L; i++) {
+			lines.add("10000 0 " + (i * 0.02 + SiloRunner.fall) + " 0 0 0.02 0 1 0 0 0");
+			lines.add("10000 " + SiloRunner.W + " " + (i * 0.02 + SiloRunner.fall) + " 0 0 0.02 0 1 0 0 0");
 			counter += 2;
 		}
 		for (int i = 0; i * 0.02 <= (SiloRunner.W - SiloRunner.D) / 2; i++) {
-			lines.add("10000 " + i * 0.02 + " 0 0 0 0.02 0 1 0 0 0");
-			lines.add("10000 " + (SiloRunner.W - i * 0.02) + " 0 0 0 0.02 0 1 0 0 0");
+			lines.add("10000 " + i * 0.02 + " " + SiloRunner.fall + " 0 0 0.02 0 1 0 0 0");
+			lines.add("10000 " + (SiloRunner.W - i * 0.02) + " " + SiloRunner.fall + " 0 0 0.02 0 1 0 0 0");
 			counter += 2;
 		}
 		return counter;

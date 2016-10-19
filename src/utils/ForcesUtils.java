@@ -28,7 +28,7 @@ public class ForcesUtils {
 	}
 	
 	public static Point wallBottomForce(VerletParticle p) {
-		double e = - p.getY() + p.getRadius();
+		double e = - (p.getY() - SiloRunner.fall) + p.getRadius();
 		return getForce(p.getVelocity(), new Point(0, -1), new Point(1, 0), e);
 	}
 }

@@ -20,8 +20,8 @@ public class Verlet {
 		this.particles = particles;
 		this.dt = dt;
 		estimateOldPosition();
-		int m = (int) (SiloRunner.L / (0.2 * SiloRunner.D));
-		cim = new CellIndexMethod<VerletParticle>(particles, SiloRunner.L, m, 0, false);
+		int m = (int) ((SiloRunner.L+SiloRunner.fall) / (0.2 * SiloRunner.D));
+		cim = new CellIndexMethod<VerletParticle>(particles, SiloRunner.L+SiloRunner.fall, m, 0, false);
 	}
 
 	private void estimateOldPosition() {
@@ -62,7 +62,7 @@ public class Verlet {
 		if (p.position.x + p.getRadius() > SiloRunner.W) {
 			sum = Point.sum(sum, ForcesUtils.wallRightForce(p));
 		}
-		if (Math.abs(p.position.y) < p.getRadius() && !inGap(p)) {
+		if (Math.abs(p.position.y-SiloRunner.fall) < p.getRadius() && !inGap(p)) {
 			sum = Point.sum(sum, ForcesUtils.wallBottomForce(p));
 		}
 		return sum;

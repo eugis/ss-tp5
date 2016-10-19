@@ -13,7 +13,7 @@ import utils.RandomUtils;
 public class SiloRunner {
 
 	private double time;
-	static public double W = 1.0, L = 4.0, D = 0.5;
+	static public double W = 1.0, L = 4.0, D = 0.5, fall=1.0;
 	static final public double Kn = 1e5, Kt = 2e5;  
 	private int N = 20;
 	private int tries = 100;
@@ -32,7 +32,7 @@ public class SiloRunner {
 	private SiloParticle createRandomParticle(){
 		double r = RandomUtils.getRandomDouble(D/7, D/5)/2.0;
 		double x = RandomUtils.getRandomDouble(r, W-r);
-		double y = RandomUtils.getRandomDouble(r, L-r);
+		double y = RandomUtils.getRandomDouble(r+fall, (L+fall)-r);
 		return new SiloParticle(idCounter, x, y, 0, 0, mass, r);
 	}
 	
