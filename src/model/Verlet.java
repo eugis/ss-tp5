@@ -38,9 +38,12 @@ public class Verlet {
 		Map<VerletParticle, Point> forces = new HashMap<VerletParticle, Point>();
 		Map<VerletParticle, Set<VerletParticle>> neighbours = cim.getNeighbours();
 		for (VerletParticle p : neighbours.keySet()) {
+			p.resetPressure();
 			Point force = p.getOwnForce();
 			for (VerletParticle q : neighbours.get(p)) {
-				force = Point.sum(force, p.getForce(q));
+				Point[] forceComponents = p.getForce(q); 
+				force.add(Point.sum(forceComponents[0], forceComponents[1]));
+				p.addPressure(forceComponents[0]);
 			}
 			force = Point.sum(force, wallForce(p));
 			forces.put(p, force);
@@ -48,7 +51,6 @@ public class Verlet {
 
 		time += dt;
 		for (VerletParticle p : neighbours.keySet()) {
-
 			Point oldPosition = p.getOldPosition();
 			updatePosition(p, forces.get(p), dt);
 			updateVelocity(p, oldPosition, dt);
@@ -60,19 +62,27 @@ public class Verlet {
 	private Point wallForce(VerletParticle p) {
 		Point sum = new Point(0, 0);
 		if (p.position.x - p.getRadius() < 0 && p.position.y > SiloRunner.fall) {
-			sum = Point.sum(sum, ForcesUtils.wallLeftForce(p));
+			Point[] force = ForcesUtils.wallLeftForce(p); 
+			sum.add(Point.sum(force[0], force[1]));
+			p.addPressure(force[0]);
 		}
 		if (p.position.x + p.getRadius() > SiloRunner.W && p.position.y > SiloRunner.fall) {
-			sum = Point.sum(sum, ForcesUtils.wallRightForce(p));
+			Point[] force = ForcesUtils.wallRightForce(p); 
+			sum.add(Point.sum(force[0], force[1]));
+			p.addPressure(force[0]);
 		}
 		if (Math.abs(p.position.y - SiloRunner.fall) < p.getRadius()) {
 			if (inGap(p)) {
 				for (VerletParticle particle : vertexParticles) {
-					sum.add(p.getForce(particle));
+					Point[] forceComponents = p.getForce(particle); 
+					sum.add(Point.sum(forceComponents[0], forceComponents[1]));
+					p.addPressure(forceComponents[0]);
 				}
 			} else {
-				sum = Point.sum(sum, ForcesUtils.wallBottomForce(p));	
-			}			
+				Point[] force = ForcesUtils.wallBottomForce(p); 
+				sum.add(Point.sum(force[0], force[1]));
+				p.addPressure(force[0]);
+			}	
 		}
 		return sum;
 	}

@@ -16,7 +16,7 @@ public class SiloRunner {
 	private double time;
 	static public double W = 1.0, L = 4.0, D = 0.5, fall = 1.0;
 	static final public double Kn = 1e5, Kt = 2e5;
-	private int N = 20;
+	private int N = 200;
 	private int tries = 100;
 	private int idCounter = 1;
 	private final double mass = 0.01;
@@ -87,21 +87,27 @@ public class SiloRunner {
 		time = 0;
 		int totalCaudal = 0;
 		double lastTime = 0.0;
+		double maxPressure = 0.0;
 		while (time < maxTime) {
 			if (lastTime + dt2 < time) {
 				outputXYZFilesGenerator.printState(particles);
 				kineticEnergy.addLine(String.valueOf(getSystemKineticEnery(particles)));
+				double mp = particles.stream().mapToDouble(x -> x.getPressure()).max().getAsDouble();
+				if (maxPressure < mp) {
+					maxPressure = mp;
+				}
 				lastTime = time;
 			}
 			v.run();
 			int c = getCaudal(particles);
 			totalCaudal += c;
-			for (int i = 0; i < c; i ++) {
+			for (int i = 0; i < c; i++) {
 				caudal.addLine(String.valueOf(time));
 			}
 			time += dt;
 		}
-		System.out.println("Average: " + totalCaudal/time);
+		System.out.println("Average: " + totalCaudal / time);
+		System.out.println("MaxPresure: " + maxPressure);
 		kineticEnergy.writeFile();
 		caudal.writeFile();
 	}
@@ -112,7 +118,7 @@ public class SiloRunner {
 			if (particle.getOldPosition().y > fall && particle.getPosition().y <= fall) {
 				caudal += 1;
 			}
-		}	
+		}
 		return caudal;
 	}
 

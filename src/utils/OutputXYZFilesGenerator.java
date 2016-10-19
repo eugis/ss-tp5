@@ -7,8 +7,9 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import run.SiloRunner;
 import model.Particle;
+import model.VerletParticle;
+import run.SiloRunner;
 
 public class OutputXYZFilesGenerator {
 
@@ -25,15 +26,20 @@ public class OutputXYZFilesGenerator {
 		}
 	}
 
-	public void printState(List<? extends Particle> particles) {
+	public void printState(List<? extends VerletParticle> particles) {
 		List<String> lines = new LinkedList<String>();
 		lines.add(String.valueOf(particles.size()));
 		lines.add("ParticleId xCoordinate yCoordinate xDisplacement yDisplacement Radius R G B Transparency Selection");
-		for (Particle p : particles) {
-			lines.add(getInfo(p, "1 0 0", 0, 0));
+		for (VerletParticle p : particles) {
+			lines.add(getInfo(p, getColorByPresure(p), 0, 0));
 		}
 		lines.set(0, String.valueOf(Integer.valueOf(lines.get(0)) + addBorderParticles(lines)));
 		writeFile(lines);
+	}
+
+	private String getColorByPresure(VerletParticle p) {
+		double relativePresure = p.getPressure()/400;
+		return relativePresure + " 0 " + (1 - relativePresure); 
 	}
 
 	private int addBorderParticles(List<String> lines) {
