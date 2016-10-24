@@ -21,7 +21,7 @@ public class Verlet {
 		this.particles = particles;
 		this.dt = dt;
 		estimateOldPosition();
-		int m = (int) ((SiloRunner.L + SiloRunner.fall) / (0.2 * SiloRunner.D));
+		int m = (int) ((SiloRunner.L + SiloRunner.fall) / (0.2 * 0.5));
 		vertexParticles = new LinkedList<>();
 		vertexParticles.add(new SiloParticle(0, SiloRunner.W / 2 - SiloRunner.D / 2, SiloRunner.fall, 0, 0, 0, 0));
 		vertexParticles.add(new SiloParticle(0, SiloRunner.W / 2 + SiloRunner.D / 2, SiloRunner.fall, 0, 0, 0, 0));
@@ -72,17 +72,17 @@ public class Verlet {
 			p.addPressure(force[0]);
 		}
 		if (Math.abs(p.position.y - SiloRunner.fall) < p.getRadius()) {
-			if (inGap(p)) {
-				for (VerletParticle particle : vertexParticles) {
-					Point[] forceComponents = p.getForce(particle); 
-					sum.add(Point.sum(forceComponents[0], forceComponents[1]));
-					p.addPressure(forceComponents[0]);
-				}
-			} else {
+//			if (inGap(p)) {
+//				for (VerletParticle particle : vertexParticles) {
+//					Point[] forceComponents = p.getForce(particle); 
+//					sum.add(Point.sum(forceComponents[0], forceComponents[1]));
+//					p.addPressure(forceComponents[0]);
+//				}
+//			} else {
 				Point[] force = ForcesUtils.wallBottomForce(p); 
 				sum.add(Point.sum(force[0], force[1]));
 				p.addPressure(force[0]);
-			}	
+//			}	
 		}
 		return sum;
 	}
@@ -99,9 +99,9 @@ public class Verlet {
 		double ry = 2 * p.position.y - p.getOldPosition().y + force.y * Math.pow(dt, 2) / p.getMass();
 
 		p.updatePosition(rx, ry);
-		if (ry < 0) {
-			p.reset(particles);
-		}
+//		if (ry < 0) {
+//			p.reset(particles);
+//		}
 	}
 
 	private void updateVelocity(VerletParticle p, Point oldPosition, double dt) {
